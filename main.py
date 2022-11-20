@@ -107,8 +107,8 @@ fig2.add_annotation(x=100, y=320,
                     text="Enter your student number",
                     showarrow=False,
                     )
-
-app.layout = html.Div(
+def layout():
+    return  html.Div(
     [
         dcc.Store(id='shapes_data1', storage_type='local'),
         dcc.Store(id='text_data1', storage_type='local'),
@@ -174,7 +174,7 @@ app.layout = html.Div(
     ],
 
 )
-
+app.layout = layout
 
 @app.callback(
     Output('fig1-image', 'figure'),
@@ -187,9 +187,9 @@ app.layout = html.Div(
 
 )
 def change_color1(relayout1_data, color, shapes_data, text_data):
-    if text_data is not ():
+    if text_data is not None:
         fig1.layout.annotations = text_data
-
+    print(text_data)
     fig1.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker1":
         update_annotations1(relayout1_data, color)
@@ -280,7 +280,7 @@ def update_annotations1(relayout_data, color_value='black', size=14):
 
 )
 def change_color2(relayout2_data, color,shapes_data, text_data):
-    if text_data is not ():
+    if text_data is not None:
         fig2.layout.annotations = text_data
     fig2.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker2":

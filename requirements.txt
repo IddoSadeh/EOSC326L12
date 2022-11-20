@@ -3,4 +3,4 @@ dash_daq==0.5.0
 Flask==2.2.2
 plotly==5.11.0
 scikit_image==0.19.3
-
+gunicorn

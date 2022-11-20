@@ -107,8 +107,8 @@ fig2.add_annotation(x=100, y=320,
                     text="Enter your student number",
                     showarrow=False,
                     )
-def layout():
-    return  html.Div(
+
+app.layout = html.Div(
     [
         dcc.Store(id='shapes_data1', storage_type='local'),
         dcc.Store(id='text_data1', storage_type='local'),
@@ -170,11 +170,12 @@ def layout():
                 dangerously_allow_html=True
             ),
         ),
+        html.Div(id='dummy_div'),
 
     ],
 
 )
-app.layout = layout
+
 
 @app.callback(
     Output('fig1-image', 'figure'),
@@ -184,12 +185,13 @@ app.layout = layout
     Input("color-picker1", "value"),
     Input('shapes_data1', 'data'),
     Input('text_data1', 'data'),
+    Input('dummy_div', 'children'),#https://community.plotly.com/t/trigger-callback-when-a-page-loads-in-order-to-update-all-plots-inputs/10001
 
 )
-def change_color1(relayout1_data, color, shapes_data, text_data):
-    if text_data is not None:
-        fig1.layout.annotations = text_data
-    print(text_data)
+def change_color1(relayout1_data, color, shapes_data, text_data, dumb):
+    if text_data is None:
+        return fig1, fig1.layout.shapes, fig1.layout.annotations
+    fig1.layout.annotations = text_data
     fig1.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker1":
         update_annotations1(relayout1_data, color)
@@ -277,11 +279,13 @@ def update_annotations1(relayout_data, color_value='black', size=14):
     Input("color-picker2", "value"),
     Input('shapes_data2', 'data'),
     Input('text_data2', 'data'),
+    Input('dummy_div', 'children')
 
 )
-def change_color2(relayout2_data, color,shapes_data, text_data):
-    if text_data is not None:
-        fig2.layout.annotations = text_data
+def change_color2(relayout2_data, color,shapes_data, text_data,dumb):
+    if text_data is None:
+        return fig2, fig2.layout.shapes, fig2.layout.annotations
+    fig2.layout.annotations = text_data
     fig2.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker2":
         update_annotations2(relayout2_data, color)

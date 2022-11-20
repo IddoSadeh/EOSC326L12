@@ -74,7 +74,8 @@ fig1.update_xaxes(
 fig1.update_yaxes(
     fixedrange=True
 )
-
+fig1.layout.shapes = None
+fig1.layout.annotations = None
 
 img2 = io.imread("https://www.eoas.ubc.ca/~quest/sketching/agerange-exercise2.jpg")
 
@@ -93,7 +94,8 @@ fig2.update_xaxes(
 fig2.update_yaxes(
     fixedrange=True
 )
-
+fig2.layout.shapes = None
+fig2.layout.annotations = None
 
 app.layout = html.Div(
     [

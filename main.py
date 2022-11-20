@@ -74,16 +74,10 @@ fig1.update_xaxes(
 fig1.update_yaxes(
     fixedrange=True
 )
-fig1.add_annotation(x=100, y=300,
-                    text="Enter your name",
-                    showarrow=False,
-                    )
-fig1.add_annotation(x=100, y=320,
-                    text="Enter your student number",
-                    showarrow=False,
-                    )
+
 
 img2 = io.imread("https://www.eoas.ubc.ca/~quest/sketching/agerange-exercise2.jpg")
+
 
 fig2 = px.imshow(img2)
 
@@ -99,21 +93,14 @@ fig2.update_xaxes(
 fig2.update_yaxes(
     fixedrange=True
 )
-fig2.add_annotation(x=100, y=300,
-                    text="Enter your name",
-                    showarrow=False,
-                    )
-fig2.add_annotation(x=100, y=320,
-                    text="Enter your student number",
-                    showarrow=False,
-                    )
+
 
 app.layout = html.Div(
     [
-        dcc.Store(id='shapes_data1', storage_type='local'),
-        dcc.Store(id='text_data1', storage_type='local'),
-        dcc.Store(id='shapes_data2', storage_type='local'),
-        dcc.Store(id='text_data2', storage_type='local'),
+        dcc.Store(id='shapes_data1', storage_type='memory'),
+        dcc.Store(id='text_data1', storage_type='memory'),
+        dcc.Store(id='shapes_data2', storage_type='memory'),
+        dcc.Store(id='text_data2', storage_type='memory'),
         html.Div([
             # instructions for lab 1
             dcc.Markdown(
@@ -185,14 +172,26 @@ app.layout = html.Div(
     Input("color-picker1", "value"),
     Input('shapes_data1', 'data'),
     Input('text_data1', 'data'),
-    Input('dummy_div', 'children'),#https://community.plotly.com/t/trigger-callback-when-a-page-loads-in-order-to-update-all-plots-inputs/10001
+
 
 )
-def change_color1(relayout1_data, color, shapes_data, text_data, dumb):
+def change_color1(relayout1_data, color, shapes_data, text_data):
     if text_data is None:
+        fig1.add_annotation(x=100, y=300,
+                            text="Enter your name",
+                            showarrow=False,
+                            )
+        fig1.add_annotation(x=100, y=320,
+                            text="Enter your student number",
+                            showarrow=False,
+                            )
         return fig1, fig1.layout.shapes, fig1.layout.annotations
-    fig1.layout.annotations = text_data
-    fig1.layout.shapes = shapes_data
+    else:
+        fig1.layout.annotations = text_data
+    if shapes_data is None:
+        return fig1, None, None
+    else:
+        fig1.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker1":
         update_annotations1(relayout1_data, color)
     elif'dragmode' in str(relayout1_data):
@@ -279,14 +278,25 @@ def update_annotations1(relayout_data, color_value='black', size=14):
     Input("color-picker2", "value"),
     Input('shapes_data2', 'data'),
     Input('text_data2', 'data'),
-    Input('dummy_div', 'children')
 
 )
-def change_color2(relayout2_data, color,shapes_data, text_data,dumb):
+def change_color2(relayout2_data, color,shapes_data, text_data):
     if text_data is None:
+        fig2.add_annotation(x=100, y=300,
+                            text="Enter your name",
+                            showarrow=False,
+                            )
+        fig2.add_annotation(x=100, y=320,
+                            text="Enter your student number",
+                            showarrow=False,
+                            )
         return fig2, fig2.layout.shapes, fig2.layout.annotations
-    fig2.layout.annotations = text_data
-    fig2.layout.shapes = shapes_data
+    else:
+        fig2.layout.annotations = text_data
+    if shapes_data is None:
+        return fig2, None, None
+    else:
+        fig2.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker2":
         update_annotations2(relayout2_data, color)
     elif 'dragmode' in str(relayout2_data):

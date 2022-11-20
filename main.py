@@ -184,10 +184,12 @@ app.layout = html.Div(
     Input("color-picker1", "value"),
     Input('shapes_data1', 'data'),
     Input('text_data1', 'data'),
-    prevent_initial_call=True
+
 )
 def change_color1(relayout1_data, color, shapes_data, text_data):
-    fig1.layout.annotations = text_data
+    if text_data is not ():
+        fig1.layout.annotations = text_data
+
     fig1.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker1":
         update_annotations1(relayout1_data, color)
@@ -275,10 +277,11 @@ def update_annotations1(relayout_data, color_value='black', size=14):
     Input("color-picker2", "value"),
     Input('shapes_data2', 'data'),
     Input('text_data2', 'data'),
-    prevent_initial_call=True
 
 )
 def change_color2(relayout2_data, color,shapes_data, text_data):
+    if text_data is not ():
+        fig2.layout.annotations = text_data
     fig2.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker2":
         update_annotations2(relayout2_data, color)
@@ -286,7 +289,7 @@ def change_color2(relayout2_data, color,shapes_data, text_data):
         return dash.no_update
     else:
         update_annotations2(relayout2_data)
-    return fig2, fig2.layout.shapes, fig2.layout.annotations,
+    return fig2, fig2.layout.shapes, fig2.layout.annotations
 
 
 def update_annotations2(relayout_data, color_value='black', size=14):

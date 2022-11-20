@@ -97,10 +97,10 @@ fig2.update_yaxes(
 
 app.layout = html.Div(
     [
-        dcc.Store(id='shapes_data1', storage_type='memory'),
-        dcc.Store(id='text_data1', storage_type='memory'),
-        dcc.Store(id='shapes_data2', storage_type='memory'),
-        dcc.Store(id='text_data2', storage_type='memory'),
+        dcc.Store(id='shapes_data1', storage_type='session'),
+        dcc.Store(id='text_data1', storage_type='session'),
+        dcc.Store(id='shapes_data2', storage_type='session'),
+        dcc.Store(id='text_data2', storage_type='session'),
         html.Div([
             # instructions for lab 1
             dcc.Markdown(
@@ -176,7 +176,10 @@ app.layout = html.Div(
 
 )
 def change_color1(relayout1_data, color, shapes_data, text_data):
-    if text_data is None:
+
+    if shapes_data is None and text_data is None:
+        fig1.layout.shapes = None
+        fig1.layout.annotations = None
         fig1.add_annotation(x=100, y=300,
                             text="Enter your name",
                             showarrow=False,
@@ -185,13 +188,10 @@ def change_color1(relayout1_data, color, shapes_data, text_data):
                             text="Enter your student number",
                             showarrow=False,
                             )
-        return fig1, fig1.layout.shapes, fig1.layout.annotations
-    else:
-        fig1.layout.annotations = text_data
-    if shapes_data is None:
-        return fig1, None, None
+        return fig1, None, fig1.layout.annotations
     else:
         fig1.layout.shapes = shapes_data
+        fig1.layout.annotations = text_data
     if ctx.triggered_id == "color-picker1":
         update_annotations1(relayout1_data, color)
     elif'dragmode' in str(relayout1_data):
@@ -281,7 +281,10 @@ def update_annotations1(relayout_data, color_value='black', size=14):
 
 )
 def change_color2(relayout2_data, color,shapes_data, text_data):
-    if text_data is None:
+
+    if shapes_data is None and text_data is None:
+        fig2.layout.shapes = None
+        fig2.layout.annotations = None
         fig2.add_annotation(x=100, y=300,
                             text="Enter your name",
                             showarrow=False,
@@ -290,13 +293,10 @@ def change_color2(relayout2_data, color,shapes_data, text_data):
                             text="Enter your student number",
                             showarrow=False,
                             )
-        return fig2, fig2.layout.shapes, fig2.layout.annotations
-    else:
-        fig2.layout.annotations = text_data
-    if shapes_data is None:
-        return fig2, None, None
+        return fig2, None, fig2.layout.annotations
     else:
         fig2.layout.shapes = shapes_data
+        fig2.layout.annotations = text_data
     if ctx.triggered_id == "color-picker2":
         update_annotations2(relayout2_data, color)
     elif 'dragmode' in str(relayout2_data):

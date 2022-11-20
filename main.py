@@ -39,12 +39,8 @@ config = {
     },
     "modeBarButtonsToAdd": [
         "drawline",
-        "drawopenpath",
-        "drawclosedpath",
-        "drawcircle",
-        "drawrect",
         "eraseshape",
-        "addtext",
+
 
     ],
     "modeBarButtonsToRemove": [
@@ -55,7 +51,12 @@ config = {
         "zoomin",
         "zoomout",
         "autoscale",
-        "resetscale"
+        "resetscale",
+        "addtext",
+        "drawopenpath",
+        "drawclosedpath",
+        "drawcircle",
+        "drawrect",
     ],
 
 }

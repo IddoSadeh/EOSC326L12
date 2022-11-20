@@ -110,6 +110,10 @@ fig2.add_annotation(x=100, y=320,
 
 app.layout = html.Div(
     [
+        dcc.Store(id='shapes_data1', storage_type='local'),
+        dcc.Store(id='text_data1', storage_type='local'),
+        dcc.Store(id='shapes_data2', storage_type='local'),
+        dcc.Store(id='text_data2', storage_type='local'),
         html.Div([
             # instructions for lab 1
             dcc.Markdown(
@@ -174,17 +178,23 @@ app.layout = html.Div(
 
 @app.callback(
     Output('fig1-image', 'figure'),
+    Output('shapes_data1', 'data'),
+    Output('text_data1', 'data'),
     Input('fig1-image', 'relayoutData'),
     Input("color-picker1", "value"),
+    Input('shapes_data1', 'data'),
+    Input('text_data1', 'data'),
 )
-def change_color1(relayout1_data, color):
+def change_color1(relayout1_data, color, shapes_data, text_data):
+    fig1.layout.annotations = text_data
+    fig1.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker1":
         update_annotations1(relayout1_data, color)
     elif'dragmode' in str(relayout1_data):
         return dash.no_update
     else:
         update_annotations1(relayout1_data)
-    return fig1
+    return fig1,fig1.layout.shapes, fig1.layout.annotations
 
 
 def update_annotations1(relayout_data, color_value='black', size=14):
@@ -258,17 +268,23 @@ def update_annotations1(relayout_data, color_value='black', size=14):
 
 @app.callback(
     Output('fig2-image', 'figure'),
+    Output('shapes_data2', 'data'),
+    Output('text_data2', 'data'),
     Input('fig2-image', 'relayoutData'),
     Input("color-picker2", "value"),
+    Input('shapes_data2', 'data'),
+    Input('text_data2', 'data'),
 )
-def change_color2(relayout2_data, color):
+def change_color2(relayout2_data, color,shapes_data, text_data):
+    fig2.layout.annotations = text_data
+    fig2.layout.shapes = shapes_data
     if ctx.triggered_id == "color-picker2":
         update_annotations2(relayout2_data, color)
     elif 'dragmode' in str(relayout2_data):
         return dash.no_update
     else:
         update_annotations2(relayout2_data)
-    return fig2
+    return fig2, fig2.layout.shapes, fig2.layout.annotations,
 
 
 def update_annotations2(relayout_data, color_value='black', size=14):
